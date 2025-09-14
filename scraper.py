@@ -23,7 +23,8 @@ def _filter_by_from(slots, time_from):
 def scrape_slots(profile_url, service=None, barber=None, pref="asap",
                  date=None, time_from=None, max_days_ahead=7, per_day_limit=8):
     with sync_playwright() as p:
-        b = p.chromium.launch(headless=True)
+        b = p.chromium.launch(headless=True),
+        args=["--no-sandbox", "--disable-dev-shm-usage"],
         ctx = b.new_context(viewport={"width": 1280, "height": 800})
         page = ctx.new_page()
         page.goto(profile_url, wait_until="domcontentloaded")

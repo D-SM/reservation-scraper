@@ -1,7 +1,7 @@
 from datetime import datetime, time, timedelta
 from zoneinfo import ZoneInfo
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
-from selectors import SELECTORS as S
+from reservation-selectors import SELECTORS as S
 
 TZ = ZoneInfo("Europe/Warsaw")
 

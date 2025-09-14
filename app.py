@@ -103,4 +103,22 @@ def test_page():
   <button id="go" style="margin-left:1rem;">Wyślij</button>
   <pre id="out" style="background:#f6f8fa;padding:16px;white-space:pre-wrap;"></pre>
 <script>
-document.getElementById('go').
+document.getElementById('go').onclick = async () => {
+  const body = {
+    profile_url: document.getElementById('u').value,
+    barber: document.getElementById('b').value || null,
+    pref: document.getElementById('p').value,
+    date: document.getElementById('d').value || null,
+    time_from: document.getElementById('t').value || null
+  };
+  const res = await fetch('/slots', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  const json = await res.json().catch(()=>({error:"Nie JSON"}));
+  document.getElementById('out').textContent = JSON.stringify(json, null, 2);
+};
+</script>
+</body></html>
+"""

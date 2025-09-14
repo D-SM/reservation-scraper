@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from scraper import scrape_slots
 
@@ -22,12 +22,16 @@ def health():
 
 @app.post("/slots")
 def slots(r: Req):
-    data = scrape_slots(
-        profile_url=r.profile_url,
-        service=r.service,
-        barber=r.barber,
-        pref=r.pref,
-        date=r.date,
-        time_from=r.time_from
-    )
-    return {"slots": data}
+    try:
+        data = scrape_slots(
+            profile_url=r.profile_url,
+            service=r.service,
+            barber=r.barber,
+            pref=r.pref,
+            date=r.date,
+            time_from=r.time_from
+        )
+        return {"slots": data}
+    except Exception as e:
+        # kluczowe: nie ubijamy procesu – zwracamy 502 dla Voiceflow
+        raise HTTPException(status_code=502, detail=f"scrape_error: {e}")
